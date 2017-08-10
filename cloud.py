@@ -38,6 +38,7 @@ def sign():
     
     print(time1,time.time())
 
+@engine.define
 def signTemp5000():
     time1 = time.time()
     
