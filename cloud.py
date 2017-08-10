@@ -122,7 +122,7 @@ def login(user,password):
         'couponActId':'796',
         'signInCount':'1'}
     html = requests.post(login_sign,data=data_sign,headers = headers_sign,timeout=4)
-    print(user,html.json(),time.time)    
+    print(user,html.json(),time.time())    
 #    time.sleep(0.1)
     
     #Prize
