@@ -18,10 +18,19 @@ engine = Engine(app)
 def sign():
     time1 = time.time()
     
-    for i in range(8998,9999):
+    for i in range(1,7000):
         
-        user = 'sy%s' % str(i)
-#        print(user,'#'*20,time.time())
+        user = 'sy%s' % str(i).zfill(4)
+
+        try:
+            login(user,'111111')
+        except Exception as e:
+            print(user,e)
+            
+    for i in range(9000,9301):
+        
+        user = 'sy%s' % str(i).zfill(4)
+
         try:
             login(user,'111111')
         except Exception as e:
@@ -29,7 +38,20 @@ def sign():
     
     print(time1,time.time())
 
-
+def signTemp5000():
+    time1 = time.time()
+    
+    for i in range(5000,6000):
+        
+        user = 'sy%s' % str(i).zfill(4)
+#        print(user,'#'*20,time.time())
+        try:
+            login(user,'111111')
+        except Exception as e:
+            print(user,e)
+    
+    print(time1,time.time())
+    
 #error_log
 def saveErrorLog(user,msg):
 
