@@ -18,12 +18,13 @@ engine = Engine(app)
 def sign():
     time1 = time.time()
     
-    for i in range(1,7000):
+    qiandaoOkNum = 0
+    for i in range(1,7031):
         
         user = 'sy%s' % str(i).zfill(4)
 
         try:
-            login(user,'111111')
+            qiandaoOkNum += login(user,'111111')
         except Exception as e:
             print(user,e)
             
@@ -32,27 +33,41 @@ def sign():
         user = 'sy%s' % str(i).zfill(4)
 
         try:
-            login(user,'111111')
+            qiandaoOkNum += login(user,'111111')
         except Exception as e:
             print(user,e)
     
-    print(time1,time.time())
+    print('OK num :%s' % qiandaoOkNum,time1,time.time())
 
 @engine.define
-def signTemp5000():
+def signTemp1918():
     time1 = time.time()
+    qiandaoOkNum = 0
     
-    for i in range(5000,6000):
+    for i in range(1918,7031):
         
         user = 'sy%s' % str(i).zfill(4)
 #        print(user,'#'*20,time.time())
         try:
-            login(user,'111111')
+            qiandaoOkNum += login(user,'111111')
+        except Exception as e:
+            print(user,e)
+            
+    for i in range(9000,9301):
+        
+        user = 'sy%s' % str(i).zfill(4)
+
+        try:
+            qiandaoOkNum += login(user,'111111')
         except Exception as e:
             print(user,e)
     
-    print(time1,time.time())
+    print('OK num :%s' % qiandaoOkNum,time1,time.time())
     
+@engine.define
+def huanxingLean():
+    print ('huanxingLean',time.time())
+
 #error_log
 def saveErrorLog(user,msg):
 
@@ -123,6 +138,11 @@ def login(user,password):
         'couponActId':'796',
         'signInCount':'1'}
     html = requests.post(login_sign,data=data_sign,headers = headers_sign,timeout=4)
+    
+    qiandaoOkNum = 0
+    if '签到成功' in html.json()['msg']:
+        qiandaoOkNum += 1
+        
     print(user,html.json(),time.time())    
 #    time.sleep(0.1)
     
@@ -153,6 +173,8 @@ def login(user,password):
         print(html.json()['result'],'*'*50)
         saveZhongJiang(user,html.json())
         
+    return qiandaoOkNum
+
 if __name__ == '__mian__':
 
     pass
