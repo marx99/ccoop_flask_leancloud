@@ -5,6 +5,7 @@ from leancloud import Object
 from leancloud import LeanEngineError
 import time
 import requests
+import cont
 from app import app
 
 try:
@@ -36,37 +37,58 @@ def sign():
             qiandaoOkNum += login(user,'111111')
         except Exception as e:
             print(user,e)
-    
-    print('OK num :%s' % qiandaoOkNum,time1,time.time())
-
-@engine.define
-def signTemp1918():
-    time1 = time.time()
-    qiandaoOkNum = 0
-    
-    for i in range(1918,7031):
+            
+    for i in range(9001,9016):
         
-        user = 'sy%s' % str(i).zfill(4)
-#        print(user,'#'*20,time.time())
+        user = 's%s' % str(i).zfill(4)
+
         try:
             qiandaoOkNum += login(user,'111111')
         except Exception as e:
             print(user,e)
             
-    for i in range(9000,9301):
+    for i in range(1190,2191):
         
-        user = 'sy%s' % str(i).zfill(4)
+        user = 'syj%s' % str(i).zfill(4)
 
         try:
-            qiandaoOkNum += login(user,'111111')
+            qiandaoOkNum += login(user,'000999')
         except Exception as e:
             print(user,e)
-    
+
+    #真实超市
+    for i in cont.chaoshi:
+        try:
+            qiandaoOkNum += login(i,'123123')
+        except Exception as e:
+            print(i,e)
+            
     print('OK num :%s' % qiandaoOkNum,time1,time.time())
+
+@engine.define
+def signTemp1918():
+    
+    qiandaoOkNum = 0
+            
+    for i in range(1190,2191):
+        
+        user = 'syj%s' % str(i).zfill(4)
+
+        try:
+            qiandaoOkNum += login(user,'000999')
+        except Exception as e:
+            print(user,e)
+    #真实超市
+    for i in cont.chaoshi:
+        try:
+            login(i,'123123')
+        except Exception as e:
+            print(i,e)
+#    pass
     
 @engine.define
 def qianquan_ap():
-    for i in range(1,150):
+    for i in range(1,100):
         
         user = 'sy%s' % str(i).zfill(4)
 #        print(user,'#'*20,time.time())
@@ -77,7 +99,7 @@ def qianquan_ap():
             
 @engine.define
 def qianquan_mp():
-    for i in range(1000,1150):
+    for i in range(1000,1100):
         
         user = 'sy%s' % str(i).zfill(4)
 #        print(user,'#'*20,time.time())
@@ -85,17 +107,6 @@ def qianquan_mp():
             qiangquan(user,'111111')
         except Exception as e:
             print(user,e)
-            
-@engine.define
-def qianquan_test():
-    for i in range(500,600):
-        
-        user = 'sy%s' % str(i).zfill(4)
-#        print(user,'#'*20,time.time())
-        try:
-            qiangquan(user,'111111')
-        except Exception as e:
-            print(user,e)    
             
 @engine.define
 def huanxingLean():
@@ -158,7 +169,7 @@ def login(user,password):
 #    print(cook)
     if html.json()['uid'] == 0 :
         saveErrorLog(user,html.json())
-        return
+        return 0
 
     #sign
     headers_sign = {'Accept':'*/*',
@@ -208,12 +219,12 @@ def login(user,password):
     data_prize = {'prizeType':'0',
         'prizePattern':'3'}
 
-    html = requests.post(url_prize,data=data_prize,headers = headers_prize,timeout=3)
-
-    if (html.json()['result']>0):
-        #中奖了
-        print(html.json()['result'],'*'*50)
-        saveZhongJiang(user,html.json())
+#    html = requests.post(url_prize,data=data_prize,headers = headers_prize,timeout=3)
+#
+#    if (html.json()['result']>0):
+#        #中奖了
+#        print(html.json()['result'],'*'*50)
+#        saveZhongJiang(user,html.json())
         
     return qiandaoOkNum
 
@@ -279,4 +290,4 @@ def qiangquan(user,password):
         
 if __name__ == '__mian__':
 
-    pass
+    qiangquan('sy0001','111111')
