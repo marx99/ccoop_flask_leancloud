@@ -66,7 +66,7 @@ def signTemp1918():
     
 @engine.define
 def qianquan_ap():
-    for i in range(1,500):
+    for i in range(1,150):
         
         user = 'sy%s' % str(i).zfill(4)
 #        print(user,'#'*20,time.time())
@@ -77,7 +77,7 @@ def qianquan_ap():
             
 @engine.define
 def qianquan_mp():
-    for i in range(1000,1500):
+    for i in range(1000,1150):
         
         user = 'sy%s' % str(i).zfill(4)
 #        print(user,'#'*20,time.time())
@@ -88,7 +88,7 @@ def qianquan_mp():
             
 @engine.define
 def qianquan_test():
-    for i in range(600,602):
+    for i in range(500,600):
         
         user = 'sy%s' % str(i).zfill(4)
 #        print(user,'#'*20,time.time())
@@ -271,10 +271,10 @@ def qiangquan(user,password):
         'prizePattern':'6'}
 
     html = requests.post(url_prize,data=data_prize,headers = headers_prize,timeout=3)
-    print(html.json())
+    print(user,html.json())
     if (html.json()['result']>0):
         #中奖了
-        print(html.json()['result'],'*'*50)
+#        print(user,html.json()['result'],'*'*20)
         saveQiangquan(user,html.json())
         
 if __name__ == '__mian__':
