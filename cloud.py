@@ -69,22 +69,16 @@ def sign():
 def signTemp1918():
     
     qiandaoOkNum = 0
-            
-    for i in range(1190,2191):
-        
-        user = 'syj%s' % str(i).zfill(4)
+    time1= time.time()
 
-        try:
-            qiandaoOkNum += login(user,'000999')
-        except Exception as e:
-            print(user,e)
     #真实超市
     for i in cont.chaoshi:
         try:
-            login(i,'123123')
+            qiandaoOkNum += login(i,'123123')
         except Exception as e:
             print(i,e)
 #    pass
+    print(qiandaoOkNum,time.time()-time1)
     
 @engine.define
 def qianquan_ap():
@@ -197,7 +191,7 @@ def login(user,password):
         qiandaoOkNum += 1
         
     print(user,html.json(),time.time())    
-#    time.sleep(0.1)
+    time.sleep(0.2)
     
     #Prize
     url_prize = 'http://chaoshi.ccoop.cn/Prize/Prizing'
