@@ -1,3 +1,38 @@
 <!doctype html>
 <title>Hello from Flask</title>
-Hello from Flask
+
+<select id='num'>
+  <option value ="5">抢5个</option>
+  <option value ="10" selected='selected' >抢10个</option>
+  <option value ="50" >抢50个</option>
+  <option value="100">抢100个</option>
+  <option value="300">抢300个</option>
+  <option value="500">抢500个</option>
+  <option value="1000">抢1000个</option>
+</select>
+<dd>
+<input type='button' value='抢100元券' onclick='fanpai();' />
+<dd>
+<div id='fanpai_info'></div>
+
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+
+//fanpai
+function fanpai(){
+	//alert($('#num').val());
+	$.ajax({
+		type: "POST",
+		url: "/fanpai/",
+		data: {num:$("#num").val()},
+		success: function(msg){
+                $('#fanpai_info').text(msg);
+		},
+		error:function(){
+                $('#fanpai_info').text("出现未知异常,抢券失败!");
+			return false;
+		},
+	});
+}
+
+</script>
