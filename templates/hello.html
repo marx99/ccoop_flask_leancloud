@@ -1,16 +1,16 @@
 <!doctype html>
-<title>Hello from Flask</title>
-
-<select id='num'>
-  <option value ="5">抢5个</option>
-  <option value ="10" selected='selected' >抢10个</option>
-  <option value ="50" >抢50个</option>
-  <option value="100">抢100个</option>
-  <option value="300">抢300个</option>
-  <option value="500">抢500个</option>
-  <option value="1000">抢1000个</option>
-</select>
+<title>批量抢券专用WEB</title>
 <dd>
+<select id='num'>
+  <option value ="2">用2个账号抢券</option>
+  <option value ="5" selected='selected' >用5个账号抢券</option>
+  <option value ="10">用10个账号抢券</option>
+  <option value ="50" >用50个账号抢券</option>
+  <option value="100">用100个账号抢券</option>
+  <option value="300">用300个账号抢券</option>
+  <option value="500">用500个账号抢券</option>
+  <option value="1000">用1000个账号抢券</option>
+</select>
 <input type='button' value='抢100元券' onclick='fanpai();' />
 <dd>
 <div id='fanpai_info'></div>
@@ -20,7 +20,10 @@
 
 //fanpai
 function fanpai(){
-	//alert($('#num').val());
+    num = ($('#num').val());
+    if(parseInt(num) >=300 && confirm("确定使用" + num + "个账号抢券,中途无法停止!") == false){
+        return false;    
+    }
 	$.ajax({
 		type: "POST",
 		url: "/fanpai/",

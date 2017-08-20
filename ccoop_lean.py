@@ -2,6 +2,7 @@
 
 import time
 import requests
+import pandas
 from leancloud import Object
 from leancloud import Query
 
@@ -184,7 +185,7 @@ def Fanpai(user,password):
         cook += ('%s=%s;' % (key,values))
 #    print(cook)
     if html.json()['uid'] == 0 :
-        saveErrorLog(user,html.json())
+#        saveErrorLog(user,html.json())
         return 0
 
     #Prize
@@ -214,7 +215,79 @@ def Fanpai(user,password):
         #中奖了
         print(html.json()['result'],'*'*50)
         saveZhongJiang(user,html.json())
-   
+        return 1
+    
+    return 0
+
+#确认订单
+def Queren(user,password,dingdan_id):
+    re = requests.Session()
+
+    headers = {'Accept':'application/json, text/javascript, */*; q=0.01',
+        'Accept-Encoding':'gzip, deflate',
+        'Accept-Language':'zh-CN,zh;q=0.8,ja;q=0.6',
+        'Content-Length':'59',
+        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+        'Host':'passport.ccoop.cn',
+        'Origin':'http://passport.ccoop.cn',
+        'Proxy-Connection':'keep-alive',
+        'Referer':'http://passport.ccoop.cn/',
+        'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36',
+        'X-Requested-With':'XMLHttpRequest'}
+    
+    login_url = 'http://passport.ccoop.cn/account/login'
+    data = {'username':user,
+        'password':password,
+        'returnurl':'',
+        'rememberMe':'false',
+        }
+    html = re.post(login_url,data=data,headers = headers)
+    cookies = requests.utils.dict_from_cookiejar(re.cookies)
+#    print(cookies)
+    cook = ''
+    for key,values  in cookies.items():
+        cook += ('%s=%s;' % (key,values))
+#    print(cook)
+    if html.json()['uid'] == 0 :
+#        saveErrorLog(user,html.json())
+        return 
+
+    #Prize
+    url_prize = 'http://order.ccoop.cn/order/okreceived'
+    headers_prize = {'Accept':'application/json, text/javascript, */*; q=0.01',
+        'Accept-Encoding':'gzip, deflate',
+        'Accept-Language':'zh-CN,zh;q=0.8,ja;q=0.6,zh-TW;q=0.4',
+        'Connection':'keep-alive',
+        'Content-Length':'23',
+        'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8',
+        'Cookie':cook,
+        'Host':'order.ccoop.cn',
+        'Origin':'http://order.ccoop.cn',
+        'Referer':'http://order.ccoop.cn/',
+        'User-Agent':'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36',
+        'X-Requested-With':'XMLHttpRequest'
+        }
+    
+    data_prize = {'order_child_id':dingdan_id}
+
+    html = requests.post(url_prize,data=data_prize,headers = headers_prize,timeout=3)
+    print(user,dingdan_id,html.json())
+
+#读取excell并确认收货
+def read_excell(path):
+    df = pandas.read_excel(path,0,header =2)
+    dingdan_list = []
+    for i in range(10):
+        dingdan = df.ix[i]['订单号'][-8:]
+        if dingdan in dingdan_list:
+            continue
+        
+        dingdan_list.append(dingdan)
+        user = df.ix[i]['超市账号']
+        print(dingdan,user)
+        
+        Queren(user,'111111',dingdan)
+    
 #error_log
 def saveErrorLog(user,msg):
 
@@ -270,3 +343,11 @@ def getAccount(num):
         result.append(temp)
 #    print (query_list)
     return result
+
+def updateAccount(objectId):
+    Account = Object.extend('Account')
+    acc = Account.create_without_data(objectId)
+    acc.set('flag','1')
+    acc.save()
+    
+    
