@@ -1,5 +1,19 @@
 <!doctype html>
 <title>批量抢券专用WEB</title>
+<!--
+<div style="background-color:green;color:white;align:center;" align="center"><font size="10">掌合商城抢券系统</font></div>
+-->
+<dd>
+<img src="http://static.ccoop.cn/pc/web/cs/images/logo.png" />
+<dd>
+<div style="color:blue;" >
+<p>1.一个账号只能抢券一次
+<br>2.本系统只适用单用户操作
+<br>3.总账号数：10361</p>
+</div>
+<dd>
+<div id='account_count' style="color:red;">未抢券账户数 ：{{count}}</div>
+<br>
 <dd>
 <select id='num'>
   <option value ="2">用2个账号抢券</option>
@@ -11,9 +25,9 @@
   <option value="500">用500个账号抢券</option>
   <option value="1000">用1000个账号抢券</option>
 </select>
-<div id='account_count'>{{count}}</div>
 <input type='button' value='抢100元券' onclick='fanpai();' />
 <dd>
+<br>
 <div id='fanpai_info'></div>
 
 <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
@@ -25,11 +39,13 @@ function fanpai(){
     if(parseInt(num) >=300 && confirm("确定使用" + num + "个账号抢券,中途无法停止!") == false){
         return false;    
     }
+    $('#fanpai_info').text("处理中……");
 	$.ajax({
 		type: "POST",
 		url: "/fanpai/",
 		data: {num:$("#num").val()},
-		success: function(msg){
+		success: function(result){
+                msg = jQuery.parseJSON(result.replace(/'/g,'"'));
                 $('#fanpai_info').text(msg.ok);
                 $('#account_count').text(msg.count);
 		},

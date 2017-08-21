@@ -34,8 +34,7 @@ def fanpai():
             except:
                 pass
             
-        count = getAccountCount()
-        countStr = '未抢券账户数/总账户数 ： %s/10361' % count
+        countStr = '未抢券账户数 ：%s' % getAccountCount()
         okStr = '本次处理 %s 个账号,抽中 %s 个券' % (len(list_user),numOK)
         return str({"count":countStr,"ok":okStr})
         
