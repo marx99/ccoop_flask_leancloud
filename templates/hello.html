@@ -11,6 +11,7 @@
   <option value="500">用500个账号抢券</option>
   <option value="1000">用1000个账号抢券</option>
 </select>
+<div id='account_count'>{{count}}</div>
 <input type='button' value='抢100元券' onclick='fanpai();' />
 <dd>
 <div id='fanpai_info'></div>
@@ -29,7 +30,8 @@ function fanpai(){
 		url: "/fanpai/",
 		data: {num:$("#num").val()},
 		success: function(msg){
-                $('#fanpai_info').text(msg);
+                $('#fanpai_info').text(msg.ok);
+                $('#account_count').text(msg.count);
 		},
 		error:function(){
                 $('#fanpai_info').text("出现未知异常,抢券失败!");

@@ -1,7 +1,7 @@
 from flask import render_template
 from flask import Flask
 from flask import request
-from ccoop_lean import Fanpai,getAccount,updateAccount
+from ccoop_lean import Fanpai,getAccount,updateAccount,getAccountCount
 
 app = Flask(__name__)
 #app.config.update(
@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route('/')
 def hello(name=None):
     
-    return render_template('hello.html')
+    return render_template('hello.html',count=getAccountCount())
 
 @app.route('/fanpai/',methods=['POST'])
 def fanpai():
@@ -19,7 +19,7 @@ def fanpai():
         num = request.form['num']
 
         list_user = getAccount(int(num))
-        print(int(num),list_user)
+#        print(int(num),list_user)
         #成功个数
         numOK = 0
         for user in list_user:
@@ -34,8 +34,11 @@ def fanpai():
             except:
                 pass
             
-#        return str(list_user)
-        return '处理 %s 个账号,抽中 %s 个券' % (len(list_user),numOK)
+        count = getAccountCount()
+        countStr = '未抢券账户数/总账户数 ： %s/10361' % count
+        okStr = '本次处理 %s 个账号,抽中 %s 个券' % (len(list_user),numOK)
+        return str({"count":countStr,"ok":okStr})
+        
     except Exception as e:
         print(e)        
         return e

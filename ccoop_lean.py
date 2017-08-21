@@ -209,7 +209,7 @@ def Fanpai(user,password):
         'prizePattern':'10'}
 
     html = requests.post(url_prize,data=data_prize,headers = headers_prize,timeout=3)
-    print(html.json())
+    print(user,html.json())
     
     if (html.json()['result']>0):
         #中奖了
@@ -333,7 +333,7 @@ def getAccount(num):
 #    query.select('')
     query_list = query.find()
 
-    print(query_list)
+#    print(query_list)
     result=[]
     for t in query_list:
         temp = []
@@ -343,6 +343,12 @@ def getAccount(num):
         result.append(temp)
 #    print (query_list)
     return result
+
+def getAccountCount():    
+    Account = Object.extend('Account')
+    query = Query(Account)
+    query.equal_to('flag', '0')
+    return query.count()
 
 def updateAccount(objectId):
     Account = Object.extend('Account')
